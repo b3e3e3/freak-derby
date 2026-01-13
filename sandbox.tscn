@@ -1,0 +1,155 @@
+[gd_scene load_steps=19 format=3 uid="uid://cydleffaa10cv"]
+
+[ext_resource type="Script" uid="uid://durlwvkrjgjvy" path="res://scene_manager.gd" id="1_cojph"]
+[ext_resource type="PackedScene" uid="uid://dxmsar87ptsnq" path="res://player.tscn" id="2_p7lbm"]
+[ext_resource type="Script" uid="uid://dmyagm8b3ht6a" path="res://chat.gd" id="3_p7lbm"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cojph"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_p7lbm"]
+sky_material = SubResource("ProceduralSkyMaterial_cojph")
+
+[sub_resource type="Environment" id="Environment_rvmsc"]
+background_mode = 2
+sky = SubResource("Sky_p7lbm")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_cojph"]
+offsets = PackedFloat32Array(0.6147541, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_p7lbm"]
+frequency = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rvmsc"]
+noise = SubResource("FastNoiseLite_p7lbm")
+color_ramp = SubResource("Gradient_cojph")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rjrbw"]
+albedo_texture = SubResource("NoiseTexture2D_rvmsc")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ypj6x"]
+material = SubResource("StandardMaterial3D_rjrbw")
+size = Vector2(1000, 1000)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_44b12"]
+
+[sub_resource type="Gradient" id="Gradient_p7lbm"]
+colors = PackedColorArray(0.19643414, 0.09150276, 0.00815939, 1, 1, 0.5137255, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rvmsc"]
+noise_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rjrbw"]
+noise = SubResource("FastNoiseLite_rvmsc")
+color_ramp = SubResource("Gradient_p7lbm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ypj6x"]
+albedo_texture = SubResource("NoiseTexture2D_rjrbw")
+
+[sub_resource type="BoxMesh" id="BoxMesh_44b12"]
+material = SubResource("StandardMaterial3D_ypj6x")
+size = Vector3(6, 6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0fpt2"]
+size = Vector3(6, 6, 1)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_cojph")
+player_scene = ExtResource("2_p7lbm")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rvmsc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_ypj6x")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_44b12")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_44b12")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_0fpt2")
+
+[node name="Chat" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_p7lbm")
+metadata/_edit_use_anchors_ = true
+
+[node name="ChatBar" type="HBoxContainer" parent="Chat"]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_top = 0.3148148
+anchor_right = 0.3125
+anchor_bottom = 0.36265433
+metadata/_edit_use_anchors_ = true
+
+[node name="ChatBox" type="LineEdit" parent="Chat/ChatBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+keep_editing_on_text_submit = true
+
+[node name="SendButton" type="Button" parent="Chat/ChatBar"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "Send"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Chat"]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.3125
+anchor_bottom = 0.30864197
+offset_bottom = -61.0
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="Chat/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Chat/ScrollContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ChatContainer" type="VBoxContainer" parent="Chat/ScrollContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CloseButton" type="Button" parent="Chat"]
+layout_mode = 0
+anchor_left = 0.2795139
+anchor_top = 0.012345679
+anchor_right = 0.30555555
+anchor_bottom = 0.060185187
+text = "X"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="text_submitted" from="Chat/ChatBar/ChatBox" to="Chat" method="_on_chat_box_text_submitted"]
+[connection signal="pressed" from="Chat/ChatBar/SendButton" to="Chat" method="_on_send_button_pressed"]
+[connection signal="pressed" from="Chat/CloseButton" to="Chat" method="_on_close_button_pressed"]
