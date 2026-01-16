@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bu4sdsqc2i4go"]
+
+[ext_resource type="Script" uid="uid://cs7ofkjue3noq" path="res://player_label.gd" id="1_vmhl3"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_tlqn1"]
+size = Vector2(32, 32)
+
+[node name="PlayerLabel" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vmhl3")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_tlqn1")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Player1"

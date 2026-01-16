@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://oh7w6vaf3lan"]
+[gd_scene load_steps=5 format=3 uid="uid://oh7w6vaf3lan"]
 
 [ext_resource type="Script" uid="uid://mfm250u2xo4h" path="res://multiplayer.gd" id="1_o4y1c"]
+[ext_resource type="Script" uid="uid://dis5jtnomp3qu" path="res://multiplayer/ui/lobby_screen.gd" id="3_5bi2t"]
+[ext_resource type="Script" uid="uid://11r230b8thrc" path="res://multiplayer/ui/connect_screen.gd" id="3_r1ube"]
 
 [sub_resource type="Theme" id="Theme_o4y1c"]
 RichTextLabel/constants/outline_size = 8
@@ -15,6 +17,32 @@ grow_vertical = 2
 theme = SubResource("Theme_o4y1c")
 script = ExtResource("1_o4y1c")
 
+[node name="ErrorDialog" type="AcceptDialog" parent="."]
+oversampling_override = 1.0
+initial_position = 2
+size = Vector2i(152, 100)
+dialog_text = "Connection failed"
+
+[node name="JoinDialog" type="ConfirmationDialog" parent="."]
+oversampling_override = 1.0
+title = "Join game"
+initial_position = 2
+size = Vector2i(300, 100)
+ok_button_text = "Join"
+
+[node name="ServerAddressEntry" type="LineEdit" parent="JoinDialog"]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.08
+anchor_right = 0.96
+anchor_bottom = 0.51
+offset_left = -4.0
+offset_right = 4.0
+size_flags_horizontal = 3
+placeholder_text = "Server IP"
+metadata/_edit_use_anchors_ = true
+
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
 anchor_right = 1.0
@@ -26,45 +54,81 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer2" type="MarginContainer" parent="."]
+[node name="HostScreen" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ConnectScreen" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 376.0
+offset_top = 233.0
+offset_right = -376.0
+offset_bottom = -233.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_r1ube")
+
+[node name="ConnectingLabel" type="Label" parent="ConnectScreen"]
+layout_mode = 2
+text = "Connecting..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartScreen" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="StartScreen"]
+custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.9999999
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+anchor_left = 0.3263889
+anchor_top = 0.39583334
+anchor_right = 0.6736111
+anchor_bottom = 0.6041667
+grow_horizontal = 2
+grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StartScreen/MarginContainer"]
 layout_mode = 2
-columns = 2
+alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer2/GridContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StartScreen/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Display name:"
+size_flags_vertical = 3
+alignment = 1
 
-[node name="NameEntry" type="LineEdit" parent="MarginContainer2/GridContainer"]
-unique_name_in_owner = true
+[node name="HostButton" type="Button" parent="StartScreen/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Host
+"
 
-[node name="Label2" type="Label" parent="MarginContainer2/GridContainer"]
+[node name="JoinButton" type="Button" parent="StartScreen/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Player color:"
+size_flags_horizontal = 3
+text = "Join"
 
-[node name="ColorPicker" type="ColorPickerButton" parent="MarginContainer2/GridContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Pick"
-color = Color(1, 1, 1, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="LobbyScreen" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -72,34 +136,96 @@ theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
+script = ExtResource("3_5bi2t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyScreen"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LobbyContainer" type="MarginContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer/LobbyContainer"]
 layout_mode = 2
 
-[node name="JoinBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="LobbyScreen/VBoxContainer/HBoxContainer/LobbyContainer/VBoxContainer"]
+layout_mode = 2
+text = "Players connected"
+
+[node name="PanelContainer" type="PanelContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer/LobbyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer/LobbyContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="ServerAddressEntry" type="LineEdit" parent="MarginContainer/VBoxContainer/JoinBar"]
+[node name="PlayerListContainer" type="VBoxContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer/LobbyContainer/VBoxContainer/PanelContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CharacterCustomizer" type="MarginContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer"]
+layout_mode = 2
+text = "Character"
+
+[node name="GridContainer" type="GridContainer" parent="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Display name:"
+
+[node name="NameEntry" type="LineEdit" parent="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Server IP"
 
-[node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/JoinBar"]
+[node name="Label2" type="Label" parent="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Join game"
+text = "Player color:"
 
-[node name="HostButton" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Host
-"
-
-[node name="StartGameButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="ColorPicker" type="ColorPickerButton" parent="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Pick"
+color = Color(1, 1, 1, 1)
+
+[node name="StartGameButton" type="Button" parent="LobbyScreen/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+size_flags_horizontal = 4
 text = "Start game"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/JoinBar/JoinButton" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_pressed"]
+[connection signal="canceled" from="ErrorDialog" to="." method="_on_error_dialog_canceled"]
+[connection signal="confirmed" from="ErrorDialog" to="." method="_on_error_dialog_confirmed"]
+[connection signal="confirmed" from="JoinDialog" to="." method="_on_join_dialog_confirmed"]
+[connection signal="pressed" from="StartScreen/MarginContainer/VBoxContainer/HBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="StartScreen/MarginContainer/VBoxContainer/HBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="StartScreen/MarginContainer/VBoxContainer/HBoxContainer/JoinButton" to="StartScreen" method="_on_host_button_pressed"]
+[connection signal="text_changed" from="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer/NameEntry" to="." method="_on_name_entry_text_changed"]
+[connection signal="color_changed" from="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer/ColorPicker" to="." method="_on_color_picker_color_changed"]
+[connection signal="pressed" from="LobbyScreen/VBoxContainer/StartGameButton" to="StartScreen" method="_on_start_game_button_pressed"]
