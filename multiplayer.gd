@@ -77,10 +77,10 @@ func send_player_info(player_name: String, peer_id: int, player_color: Color):
 	# if !GameManager.players.has(peer_id):
 	GameManager.players[peer_id] = PlayerInfo.new(player_name, peer_id, player_color)
 
-	if multiplayer.is_server():
-		for i in GameManager.players:
-			var info := GameManager.players[i]
-			broadcast_player_info.rpc(info.name, i, info.color)
+	# if multiplayer.is_server():
+	for i in GameManager.players:
+		var info := GameManager.players[i]
+		broadcast_player_info.rpc(info.name, i, info.color)
 
 @rpc("authority", "call_local")
 func broadcast_player_info(player_name: String, peer_id: int, player_color: Color):
@@ -90,6 +90,7 @@ func broadcast_player_info(player_name: String, peer_id: int, player_color: Colo
 func start_game():
 	var scene = load("res://sandbox.tscn").instantiate()
 	get_tree().root.add_child(scene)
+	print("Starting game, is server? ", multiplayer.is_server())
 	self.hide()
 
 
@@ -120,7 +121,7 @@ func _on_join_dialog_confirmed() -> void:
 	change_state($LobbyScreen)
 
 
-func _on_start_game_pressed() -> void:
+func _on_start_game_button_pressed() -> void:
 	start_game.rpc()
 
 

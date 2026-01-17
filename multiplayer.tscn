@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://oh7w6vaf3lan"]
+[gd_scene load_steps=6 format=3 uid="uid://oh7w6vaf3lan"]
 
 [ext_resource type="Script" uid="uid://mfm250u2xo4h" path="res://multiplayer.gd" id="1_o4y1c"]
 [ext_resource type="Script" uid="uid://dis5jtnomp3qu" path="res://multiplayer/ui/lobby_screen.gd" id="3_5bi2t"]
@@ -6,6 +6,8 @@
 
 [sub_resource type="Theme" id="Theme_o4y1c"]
 RichTextLabel/constants/outline_size = 8
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_5bi2t"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -220,6 +222,9 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Start game"
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_5bi2t")
+
 [connection signal="canceled" from="ErrorDialog" to="." method="_on_error_dialog_canceled"]
 [connection signal="confirmed" from="ErrorDialog" to="." method="_on_error_dialog_confirmed"]
 [connection signal="confirmed" from="JoinDialog" to="." method="_on_join_dialog_confirmed"]
@@ -228,4 +233,4 @@ text = "Start game"
 [connection signal="pressed" from="StartScreen/MarginContainer/VBoxContainer/HBoxContainer/JoinButton" to="StartScreen" method="_on_host_button_pressed"]
 [connection signal="text_changed" from="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer/NameEntry" to="." method="_on_name_entry_text_changed"]
 [connection signal="color_changed" from="LobbyScreen/VBoxContainer/HBoxContainer/CharacterCustomizer/VBoxContainer/GridContainer/ColorPicker" to="." method="_on_color_picker_color_changed"]
-[connection signal="pressed" from="LobbyScreen/VBoxContainer/StartGameButton" to="StartScreen" method="_on_start_game_button_pressed"]
+[connection signal="pressed" from="LobbyScreen/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]

@@ -10,7 +10,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	# TODO: on submitted signal
-	print(%ChatBox.has_focus())
 	if Input.is_action_just_pressed(&"ui_text_submit"):
 		if not is_chat_open():
 			open_chat()
